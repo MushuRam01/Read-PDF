@@ -11,7 +11,7 @@ app = Flask(__name__)
 CORS(app)
 
 # OpenRouter API configuration
-'''
+OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions"
 # Load the OpenRouter API token from a separate file
 TOKEN_FILE = 'openrouter_token.txt'
 if not os.path.exists(TOKEN_FILE):
@@ -22,11 +22,11 @@ with open(TOKEN_FILE, 'r') as file:
 
 OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions"
 
-'''
-##### this is for testing... remove abefore git push and production build
-OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions"
 
-OPENROUTER_API_TOKEN = "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"  #token
+
+
+
+
 
 @app.route('/')
 def index():
