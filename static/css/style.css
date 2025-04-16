@@ -1,0 +1,279 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f5f7fa;
+    height: 100vh;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#root {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pdf-app {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.welcome-card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 100%;
+}
+
+.welcome-card h1 {
+    color: #2d3748;
+    margin-bottom: 20px;
+    font-size: 2.5rem;
+}
+
+.pdf-icon {
+    font-size: 5rem;
+    margin: 20px 0;
+}
+
+.tagline {
+    font-size: 1.2rem;
+    color: #4a5568;
+    margin-bottom: 30px;
+}
+
+.features {
+    margin: 25px 0;
+    text-align: left;
+}
+
+.features h3 {
+    margin-bottom: 10px;
+    color: #2d3748;
+}
+
+.features ul {
+    list-style-type: none;
+}
+
+.features li {
+    padding: 8px 0;
+    border-bottom: 1px solid #edf2f7;
+}
+
+.features li:before {
+    content: "✓";
+    color: #38a169;
+    margin-right: 10px;
+}
+
+.start-btn {
+    background-color: #3182ce;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 20px;
+}
+
+.start-btn:hover {
+    background-color: #2c5282;
+}
+
+footer {
+    text-align: center;
+    padding: 20px 0;
+    color: #718096;
+    font-size: 0.9rem;
+}
+
+/* static/css/style.css (add these styles) */
+
+/* PDF Container with sidebar layout */
+.pdf-content-wrapper {
+    display: flex;
+    width: 100%;
+    min-height: 800px;
+    margin-top: 20px;
+  }
+  
+  .pdf-viewer {
+    flex: 7;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 10px;
+    background-color: #f5f5f5;
+  }
+  
+  .pdf-viewer canvas {
+    display: block;
+    margin: 20px auto;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Override sidebar to be fixed at the top-right of the screen */
+.page-comment-sidebar {
+    position: fixed;   /* Makes the element fixed relative to the viewport */
+    top: 0;            /* Aligns the sidebar to the top edge */
+    right: 0;          /* Places the sidebar on the right side */
+    width: 300px;      /* Defines a fixed width; adjust as needed */
+    height: 100vh;     /* Ensures the sidebar takes up the full viewport height */
+    overflow-y: auto;  /* Allows scrolling within the sidebar if content overflows */
+    background-color: #f9f9f9;  /* Ensures the background matches your design */
+    border-left: 1px solid #ddd; /* Retain or adjust the border if desired */
+    padding: 15px;
+    z-index: 1000;     /* Ensures the sidebar stays above other page elements */
+  }
+  
+  /* Adjust main PDF viewer content to avoid being hidden behind the fixed sidebar */
+  .pdf-content-wrapper {
+    margin-right: 320px;  /* This value should be >= the fixed sidebar width + some margin */
+  }
+  
+  
+  
+  .page-comment-sidebar h3 {
+    margin-top: 0;
+    color: #333;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+  }
+  
+  .page-info {
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 15px;
+  }
+  
+  .comment-content {
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    padding: 15px;
+    min-height: 150px;
+  }
+  
+  .loading-spinner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
+    color: #888;
+  }
+  
+  .comment-text {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  
+  /* Main container and app styles */
+  .container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    color: #333;
+  }
+  
+  h1, h2, h3 {
+    color: #444;
+  }
+  
+  button {
+    background-color: #4285f4;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  button:hover {
+    background-color: #3367d6;
+  }
+  
+  /* Upload page styles */
+  .upload-page {
+    max-width: 500px;
+    margin: 50px auto;
+    text-align: center;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  .upload-page input[type="file"] {
+    margin: 20px 0;
+    width: 100%;
+  }
+  
+  /* Welcome page styles */
+  .welcome-card {
+    text-align: center;
+    padding: 40px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 700px;
+    margin: 50px auto;
+  }
+  
+  .pdf-icon {
+    font-size: 60px;
+    margin: 20px 0;
+  }
+  
+  .tagline {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 30px;
+  }
+  
+  .features {
+    text-align: left;
+    margin: 30px 0;
+  }
+  
+  .start-btn {
+    padding: 12px 30px;
+    font-size: 16px;
+  }
+  
+  footer {
+    margin-top: 50px;
+    text-align: center;
+    color: #888;
+    font-size: 14px;
+  }

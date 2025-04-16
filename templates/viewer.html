@@ -1,0 +1,28 @@
+<!-- templates/viewer.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>View PDF</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+  <script type="text/babel" src="{{ url_for('static', filename='js/components/PDFViewer.js') }}"></script>
+</head>
+<body>
+  <div class="container">
+    <div id="viewer-root"></div>
+  </div>
+  <script type="text/babel">
+    // Get filename from the URL path
+    const pathParts = window.location.pathname.split('/');
+    const filename = pathParts[pathParts.length - 1];
+    
+    const root = ReactDOM.createRoot(document.getElementById("viewer-root"));
+    root.render(<PDFViewer fileName={filename} />);
+  </script>
+</body>
+</html>
