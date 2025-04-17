@@ -2,25 +2,27 @@ from flask import Flask, render_template, jsonify, send_from_directory, request
 import os
 import fitz
 from flask_cors import CORS
-import requests  # For API calls
+import requests  
 from openai import OpenAI
+import dotenv
+import os
+from dotenv import load_dotenv  
+
+load_dotenv()
 
 UPLOAD_FOLDER = 'uploads'
 
 app = Flask(__name__)
 CORS(app)
 
+
+
+
 # OpenRouter API configuration
-OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions"
+
 # Load the OpenRouter API token from a separate file
-TOKEN_FILE = 'openrouter_token.txt'
-if not os.path.exists(TOKEN_FILE):
-    raise FileNotFoundError(f"Token file {TOKEN_FILE} not found. Please create it and add your token.")
-
-with open(TOKEN_FILE, 'r') as file:
-    OPENROUTER_API_TOKEN = file.read().strip()
-
-OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions"
+OPENROUTER_API_TOKEN = os.getenv("OPENROUTER_API_TOKEN")
+OPENROUTER_API_URL = os.getenv("OPENROUTER_API_URL")
 
 
 
@@ -130,13 +132,15 @@ def get_ai_comment():
 
 @app.route('/api/pdf-info', methods=['GET'])
 def get_pdf_info():
-    # Placeholder API endpoint for future functionality
+    
+
     info = {
         "appName": "PDF Reader",
         "version": "1.0",
         "capabilities": ["View PDFs", "Search Text", "Bookmark Pages"]
     }
     return jsonify(info)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
