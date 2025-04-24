@@ -3,32 +3,21 @@ import os
 import fitz
 from flask_cors import CORS
 import requests  
-from openai import OpenAI
-import dotenv
-import os
-from dotenv import load_dotenv  
+from dotenv import load_dotenv
 
+# Load environment variables
 load_dotenv()
 
-UPLOAD_FOLDER = 'uploads'
+# Configure folders
+TEMPLATE_FOLDER = os.path.join(os.path.dirname(__file__), "templates")
+UPLOAD_FOLDER = "/tmp" if os.environ.get("VERCEL") else "uploads"
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder=TEMPLATE_FOLDER)
 CORS(app)
 
-
-
-
-# OpenRouter API configuration
-
-# Load the OpenRouter API token from a separate file
+# OpenRouter API config
 OPENROUTER_API_TOKEN = os.getenv("OPENROUTER_API_TOKEN")
 OPENROUTER_API_URL = os.getenv("OPENROUTER_API_URL")
-
-
-
-
-
-
 
 @app.route('/')
 def index():
@@ -37,10 +26,6 @@ def index():
 @app.route('/upload')
 def upload():
     return render_template('upload.html')
-
-@app.route('/uploads/<path:filename>')
-def serve_uploaded_file(filename):
-    return send_from_directory('uploads', filename)
 
 @app.route('/uploads/<filename>')
 def serve_pdf(filename):
@@ -67,14 +52,11 @@ def get_pdf_text(filename):
 def upload_pdf():
     uploaded_file = request.files.get('pdf')
     if uploaded_file and uploaded_file.filename.endswith('.pdf'):
-        filepath = os.path.join('uploads', uploaded_file.filename)
+        filepath = os.path.join(UPLOAD_FOLDER, uploaded_file.filename)
         uploaded_file.save(filepath)
         return jsonify({"status": "success", "filename": uploaded_file.filename})
     
-    print("Request.files:", request.files)
-    print("Received file:", uploaded_file)
     return jsonify({"status": "error", "message": "Invalid file"}), 400
-
 
 @app.route('/api/get-ai-comment', methods=['POST'])
 def get_ai_comment():
@@ -85,7 +67,7 @@ def get_ai_comment():
     if not page_text:
         return jsonify({"comment": "No text available for analysis"}), 400
 
-    text_to_analyze = page_text[:3000]  # Limit to 3000 characters
+    text_to_analyze = page_text[:3000]
     prompt = f"Please provide a brief, helpful summary of the following text from page {page_number} of a PDF document:\n\n{text_to_analyze}"
     
     try:
@@ -104,36 +86,20 @@ def get_ai_comment():
         }
         
         response = requests.post(OPENROUTER_API_URL, json=payload, headers=headers)
-        
-        # Debug output: print status code and response text
-        print("Status code:", response.status_code)
-        print("Response text:", response.text)
-        
-        # Attempt to parse the JSON response, but catch issues if it's not valid JSON
-        try:
-            result = response.json()
-        except Exception as json_err:
-            return jsonify({"comment": f"Error parsing JSON: {str(json_err)}. Response content: {response.text}"}), 500
+        result = response.json()
 
-        if response.status_code == 200:
-            if "choices" in result and len(result["choices"]) > 0:
-                comment = result["choices"][0]["message"]["content"]
-            else:
-                comment = str(result)
+        if response.status_code == 200 and "choices" in result:
+            comment = result["choices"][0]["message"]["content"]
         else:
             comment = f"API error (status code: {response.status_code}). Response: {result}"
         
         return jsonify({"comment": comment})
     
     except Exception as e:
-        print(f"Error with OpenRouter API: {str(e)}")
-        return jsonify({"comment": "Error connecting to AI service. Please try again later."}), 500
-
+        return jsonify({"comment": f"Error connecting to AI service: {str(e)}"}), 500
 
 @app.route('/api/pdf-info', methods=['GET'])
 def get_pdf_info():
-    
-
     info = {
         "appName": "PDF Reader",
         "version": "1.0",
@@ -141,6 +107,9 @@ def get_pdf_info():
     }
     return jsonify(info)
 
+# Vercel needs this line
+handler = app
 
+# Optional for local dev
 if __name__ == '__main__':
     app.run(debug=True)
