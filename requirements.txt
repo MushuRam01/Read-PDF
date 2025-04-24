@@ -2,7 +2,6 @@ annotated-types==0.7.0
 anyio==3.7.1
 appdirs==1.4.4
 appwrite==10.0.0
-apturl==0.5.2
 async-timeout==5.0.1
 attrs==21.2.0
 bcrypt==3.2.0
