@@ -10,14 +10,16 @@ load_dotenv()
 
 # Configure folders
 TEMPLATE_FOLDER = os.path.join(os.path.dirname(__file__), "templates")
+STATIC_FOLDER = os.path.join(os.path.dirname(__file__), "static")
 UPLOAD_FOLDER = "/tmp" if os.environ.get("VERCEL") else "uploads"
 
-app = Flask(__name__, template_folder=TEMPLATE_FOLDER)
+app = Flask(__name__, template_folder=TEMPLATE_FOLDER, static_folder=STATIC_FOLDER)
 CORS(app)
 
 # OpenRouter API config
 OPENROUTER_API_TOKEN = os.getenv("OPENROUTER_API_TOKEN")
 OPENROUTER_API_URL = os.getenv("OPENROUTER_API_URL")
+
 
 @app.route('/')
 def index():
