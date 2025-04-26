@@ -13,12 +13,14 @@ TEMPLATE_FOLDER = os.path.join(os.path.dirname(__file__), "templates")
 STATIC_FOLDER = os.path.join(os.path.dirname(__file__), "static")
 UPLOAD_FOLDER = "/tmp" if os.environ.get("VERCEL") else "uploads"
 
+
 app = Flask(__name__, template_folder=TEMPLATE_FOLDER, static_folder=STATIC_FOLDER)
 CORS(app)
 
 # OpenRouter API config
-OPENROUTER_API_TOKEN = os.getenv("OPENROUTER_API_TOKEN")
-OPENROUTER_API_URL = os.getenv("OPENROUTER_API_URL")
+API_TOKEN = os.getenv("API_TOKEN")
+API_URL = os.getenv("API_URL")
+MODEL_NAME= os.getenv("MODEL_NAME")
 
 
 @app.route('/')
@@ -74,12 +76,12 @@ def get_ai_comment():
     
     try:
         headers = {
-            "Authorization": f"Bearer {OPENROUTER_API_TOKEN}",
+            "Authorization": f"Bearer {API_TOKEN}",  #  Together AI key here
             "Content-Type": "application/json"
         }
         
         payload = {
-            "model": "meta-llama/llama-4-maverick:free",
+            "model": f"{MODEL_NAME}",  #  Together model name
             "messages": [
                 {"role": "user", "content": prompt}
             ],
@@ -87,7 +89,7 @@ def get_ai_comment():
             "temperature": 0.7
         }
         
-        response = requests.post(OPENROUTER_API_URL, json=payload, headers=headers)
+        response = requests.post(API_URL, json=payload, headers=headers)
         result = response.json()
 
         if response.status_code == 200 and "choices" in result:
@@ -105,7 +107,13 @@ def get_pdf_info():
     info = {
         "appName": "PDF Reader",
         "version": "1.0",
-        "capabilities": ["View PDFs", "Search Text", "Bookmark Pages"]
+        "capabilities": [
+            "Upload and view PDFs",
+            "Summarize PDF pages with AI",
+            "Simple and fast interface",
+            "text selection based AI coming soon :)"
+        ]
+        
     }
     return jsonify(info)
 
