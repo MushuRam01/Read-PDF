@@ -21,4 +21,4 @@ An interactive web application that allows users to upload and read PDF document
   - Flask backend handles PDF parsing and AI integration.
 
 ---
-# Vercel redeploy fix
+# deployed on render
